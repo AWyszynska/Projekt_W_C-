@@ -10,7 +10,7 @@ class Shop {
 
 public:
     Shop(sf::RenderWindow& window); 
-
+        std::ostringstream ss;
     void run();
 
 private:
@@ -30,7 +30,7 @@ private:
     char truskawkaznak = 'T';
 
     int licznik = 0;
-    std::ostringstream ss;
+
     sf::Texture pricesset1;
     sf::Texture pricesset2;
     sf::Texture pricesset3;
@@ -49,17 +49,24 @@ private:
 
     std::vector<char> zbiornik;
     std::vector<char> wypisz;
-    std::vector<char> letter;
-
+    std::vector<int> letter= {0,0,0,0};
+   // auto it;
     bool found;
+
+sf::Font font;
+sf::Text text;
+int xPos;
+
+    int zlotowki = 10000;
+    sf::Text pieniadze;
 
     sf::Texture obraz1;
     sf::Texture obraz2;
 sf::Texture obraz3;
-    std::map<char, int> letterCount; // Zliczanie wystąpień liter
 
-    // ... reszta funkcji pozostaje bez zmian
-    void updateLetterCount(char letter);
+    sf::Texture skrzynkazdj;
+    sf::Sprite skrzynka;
+ std::string zlotowkiStr;
     bool isRunning;
     void render();
     void handleEvents();

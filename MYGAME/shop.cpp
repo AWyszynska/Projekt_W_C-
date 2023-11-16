@@ -4,12 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include <thread>
+#include <sstream>
 
 Shop::Shop(sf::RenderWindow& window) : window(window),
     buykernel1(window, sf::Vector2f(200, 210), sf::Vector2f(100, 100)),
     buykernel2(window, sf::Vector2f(356, 210), sf::Vector2f(100, 100)),
     buykernel3(window, sf::Vector2f(512, 210), sf::Vector2f(100, 100)),
-    isRunning(true)  {
+    isRunning(true),zlotowki(10000),
+    pieniadze(sf::Text("", font, 30)) {
     window.setFramerateLimit(60);
 
 
@@ -18,12 +20,38 @@ Shop::Shop(sf::RenderWindow& window) : window(window),
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
     background.setTexture(backgroundTexture);
+   
 
 
+
+
+        if (!font.loadFromFile("Flottflott.ttf")) {
+            std::cout << "Error loading font file!" << std::endl;
+        }
+         else{
+            std::cout << "działa" << std::endl;
+        }
+        text.setFont(font);
+        text.setCharacterSize(30);
+        text.setFillColor(sf::Color::Black);
+
+
+        pieniadze.setFont(font);
+        pieniadze.setCharacterSize(30);
+        pieniadze.setFillColor(sf::Color::Black);
+
+    ss << zlotowki; // Inicjalizacja ss
+    zlotowkiStr = ss.str();
 
 }
 
 void Shop::addprice(){
+    if (!skrzynkazdj.loadFromFile("aazdj/skrzynka.png")) {
+        std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    skrzynka.setTexture(skrzynkazdj);
+    skrzynka.setPosition(950.0f, 0.0f);
+    skrzynka.setScale(0.5f, 0.5f);
 
     if (!pasek_zdj.loadFromFile("aazdj/pasek.png"))
     {
@@ -84,7 +112,7 @@ void Shop::run() {
         addprice();
         render();
         addkernalforshelf();
-        
+
     }
 }
 
@@ -95,7 +123,6 @@ void Shop::handleEvents() {
             window.close();
         } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             if (buykernel1.isHoveredButton()) {//pszenica
-                std::cout << "Kliknięto!\n";
                  zbiornik.push_back(pszenicaznak);
                  licznik = 0; 
 
@@ -103,14 +130,8 @@ void Shop::handleEvents() {
                          if (num == 'P') {
                             licznik++;
                     }
-                    
                     }
-
-
-
             found = false;
-
-            // Sprawdzamy, czy literka jest już w wektorze
             for (char znak : wypisz) {
             if (znak == pszenicaznak) {
                 found = true;
@@ -122,12 +143,14 @@ void Shop::handleEvents() {
         wypisz.push_back(pszenicaznak);
         }
 
-    updateLetterCount(pszenicaznak);
+    auto it = std::find(wypisz.begin(), wypisz.end(), 'P');
+    if (it != wypisz.end()) {
+        int position = std::distance(wypisz.begin(), it);
+        letter[position]++;
+    } 
             }
             else if (buykernel2.isHoveredButton()) {//marchewka
             
-                std::cout << "Marchewka!\n";
-                std::cout << "Rozmiar wektora: " << zbiornik.size() << std::endl;
                  zbiornik.push_back(marchewkaznak);
                  licznik = 0;   
                   found = false;
@@ -141,20 +164,15 @@ void Shop::handleEvents() {
          if (!found) {
         wypisz.push_back(marchewkaznak);
         }
-
-    updateLetterCount(marchewkaznak);
+    auto it = std::find(wypisz.begin(), wypisz.end(), 'M');
+    if (it != wypisz.end()) {
+        int position = std::distance(wypisz.begin(), it);
+        letter[position]++;
+    } 
+ 
             }
             else if (buykernel3.isHoveredButton()) {//truskawka
-               updateLetterCount(truskawkaznak);
-            for (char num : wypisz) {
-                std::cout << num << " ";
-                    
-                    }
-
-
-
-                std::cout << licznik << std::endl;
-                std::cout << "Truskawka!\n";
+              
                  zbiornik.push_back(truskawkaznak);
                  licznik = 0; 
 
@@ -168,14 +186,19 @@ void Shop::handleEvents() {
          if (!found) {
         wypisz.push_back(truskawkaznak);
         }
-
-            }
+    auto it = std::find(wypisz.begin(), wypisz.end(), 'T');
+    if (it != wypisz.end()) {
+        int position = std::distance(wypisz.begin(), it);
+        letter[position]++;
+    } 
+      
         }
     }
 }
+}
 
 void Shop::tableforunder(){
-    //if(wypisz.size()>0){
+
         int position = 270;
     int interval = 150;
 
@@ -185,7 +208,7 @@ void Shop::tableforunder(){
             if (obraz1.loadFromFile("aazdj/nasiono1.png")) {
                 sf::Sprite sprite(obraz1);
                 sprite.setPosition(position,690); 
-                sprite.setScale(0.2f, 0.2f);
+                sprite.setScale(0.15f, 0.15f);
                 window.draw(sprite);
                 
             }
@@ -209,21 +232,10 @@ void Shop::tableforunder(){
         position += interval;
     }
 
-    //}
+
 
 }
 
-void Shop::updateLetterCount(char letter) {
-    // Sprawdź, czy litera jest już w mapie letterCount
-    auto it = letterCount.find(letter);
-    if (it != letterCount.end()) {
-        // Jeśli litera jest już w mapie, zwiększ liczbę wystąpień
-        it->second++;
-    } else {
-        // Jeśli litera nie istnieje, dodaj ją do mapy z liczbą wystąpień ustawioną na 1
-        letterCount.insert({letter, 1});
-    }
-}
 
 
 void Shop::render()
@@ -241,10 +253,23 @@ void Shop::render()
         window.draw(price1);
         window.draw(price2);
         window.draw(price3);
-            for (const auto& entry : letterCount) {
-        std::cout << entry.first << ": " << entry.second << std::endl;
-        // Tutaj możesz umieścić te liczby w oknie, na przykład w polu tekstowym lub wypisywać na ekranie gry
-    }
+       
+
+        xPos = 220;
+        for (int i = 0; i < letter.size(); ++i) {
+            xPos += 140;
+             if (letter[i] != 0) { 
+            text.setString(std::to_string(letter[i]));
+            text.setPosition(xPos, 750); // Ustawienie pozycji na stałe poza pętlą rysowania
+            window.draw(text);
+         }
+        }
+
+pieniadze.setString(zlotowkiStr);
+pieniadze.setPosition(100, 100);
+window.draw(pieniadze);
+
         tableforunder();
+         window.draw(skrzynka);
         window.display();
 }
