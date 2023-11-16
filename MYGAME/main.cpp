@@ -5,6 +5,8 @@
 #include "menu.h"
 #include "garden.h"
 #include "guzikwarz.h"
+#include "shop.h"
+#include "guziksklep.h"
 
 int main() {
 
@@ -12,12 +14,12 @@ int main() {
     //Menu menu;
     //menu.run();
 
-    // After the menu, create and run the Game class
+
     sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
     window.setFramerateLimit(60);
 
-    static Garden garden(window);
-    garden.run();
+    static Shop shop(window);
+    shop.run();
 
     return 0;
 }

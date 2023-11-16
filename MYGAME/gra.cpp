@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "garden.h"
+#include "shop.h"
 
 Game::Game(sf::RenderWindow& window): window(window),isRunning(true),
 ogrod(window, sf::Vector2f(60, 195), sf::Vector2f(332, 245)),
@@ -16,7 +17,7 @@ sklep(window, sf::Vector2f(845, 480), sf::Vector2f(340, 339))
 
 
 
-    if (!backgroundTexture.loadFromFile("tlopoprawione.png")) {
+    if (!backgroundTexture.loadFromFile("aazdj/tlopoprawione.png")) {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
 
@@ -36,25 +37,25 @@ void Game::run()
 
 void Game::loadedplace()
 {
-        if (!guzikTexture.loadFromFile("ggg.png")) {
+        if (!guzikTexture.loadFromFile("aazdj/ggg.png")) {
         std::cout<<"blad\n";
     }
     ogrod.setTexture(guzikTexture);
 
-        if (!sadzdjecie.loadFromFile("sad1.png")) {
+        if (!sadzdjecie.loadFromFile("aazdj/sad1.png")) {
         std::cout<<"blad\n";
    }
    sad.setTexture(sadzdjecie);
 
-        if (!cavephoto.loadFromFile("kopalnia1.png")) {
+        if (!cavephoto.loadFromFile("aazdj/kopalnia1.png")) {
         std::cout<<"blad\n";
     }
     kopalnia.setTexture(cavephoto);
-        if (!animalphoto.loadFromFile("hodowla1.png")) {
+        if (!animalphoto.loadFromFile("aazdj/hodowla1.png")) {
         std::cout<<"blad\n";
     }
     hodowla.setTexture(animalphoto);
-    if (!shopphoto.loadFromFile("sklep1.png")) {
+    if (!shopphoto.loadFromFile("aazdj/sklep1.png")) {
         std::cout<<"blad\n";
     }
     sklep.setTexture(shopphoto);
@@ -78,6 +79,9 @@ void Game::handleEvents() {
             
             if (ogrod.isHoveredButton()) {
                 switchToGarden();
+            }
+            if (sklep.isHoveredButton()) {
+                switchToShop();
             }
         }
     }
@@ -108,7 +112,11 @@ void Game::switchToGarden() {
     garden.run();
 }
 
+void Game::switchToShop() {
 
+    Shop shop(window);
+    shop.run();
+}
 
 
 

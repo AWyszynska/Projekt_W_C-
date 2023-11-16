@@ -2,6 +2,7 @@
 #include "guzik.h"
 #include <SFML/Graphics.hpp>
 #include "garden.h"
+#include "shop.h"
 
 class Game {
 public:
@@ -32,7 +33,7 @@ private:
 
 
 void switchToGarden();
-
+void switchToShop();
 
     void handleEvents();
     void loadedplace();

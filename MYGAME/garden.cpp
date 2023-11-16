@@ -1,5 +1,6 @@
 
 #include "garden.h" 
+#include "guziksklep.h" 
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <chrono>

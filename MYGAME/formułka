@@ -1,0 +1,21 @@
+g++ -c shop.cpp -o shop.o
+g++ -c guziksklep.cpp -o guziksklep.o
+g++ -c guzik.cpp -o guzik.o
+g++ -c menu.cpp -o menu.o
+g++ -c main.cpp -o main.o
+g++ -c gra.cpp -o gra.o
+g++ -c guzikwarz.cpp -o guzikwarz.o
+g++ -c garden.cpp -o garden.o
+
+
+
+for (char num : zbiornik) {
+                        std::cout << num << " ";
+                         if (num == 'P') {
+                            licznik++;
+                    }
+                    
+                    }
+
+
+                    
