@@ -13,7 +13,7 @@ Menu::Menu() : window(sf::VideoMode(1200, 800), "handlarz"), isRunning(true),
 
     background.setTexture(backgroundTexture);
 
-    if (!guzikTexture.loadFromFile("sadzonka1.png")) {
+    if (!guzikTexture.loadFromFile("aazdj/guzikmenu.png")) {
         std::cout << "blad\n";
     }
     startgame.setTexture(guzikTexture);

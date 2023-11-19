@@ -3,8 +3,11 @@
 #include <chrono>
 #include <thread>
 #include "guziksklep.h"
+#include "guzik.h"
 #include <vector>
 #include <sstream>
+#include "gra.h"
+#include <fstream>
 
 class Shop {
 
@@ -39,6 +42,10 @@ private:
     sf::Sprite price3;
 
     int liczba = 42;
+
+
+    Guzik exit;
+    sf::Texture exittextur;
 
     sf::Texture ziar1;
     sf::Texture ziar2;
@@ -75,4 +82,5 @@ sf::Texture obraz3;
     void tableforunder();
     void drawValuesAtBottom(); 
     void zlicz();
+    void switchTofarm();
 };

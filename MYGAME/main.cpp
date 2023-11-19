@@ -11,15 +11,15 @@
 int main() {
 
 
-    //Menu menu;
-    //menu.run();
+    static Menu menu;
+    menu.run();
 
 
-    sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
-    window.setFramerateLimit(60);
+    //sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
+   //window.setFramerateLimit(60);
 
-    static Shop shop(window);
-    shop.run();
+    //static Shop shop(window);
+    //shop.run();
 
     return 0;
 }

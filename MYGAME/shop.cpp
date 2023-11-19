@@ -10,6 +10,7 @@ Shop::Shop(sf::RenderWindow& window) : window(window),
     buykernel1(window, sf::Vector2f(200, 210), sf::Vector2f(100, 100)),
     buykernel2(window, sf::Vector2f(356, 210), sf::Vector2f(100, 100)),
     buykernel3(window, sf::Vector2f(512, 210), sf::Vector2f(100, 100)),
+    exit(window, sf::Vector2f(50, 50), sf::Vector2f(100, 100)),
     isRunning(true),zlotowki(10000),
     pieniadze(sf::Text("", font, 30)) {
     window.setFramerateLimit(60);
@@ -35,6 +36,12 @@ Shop::Shop(sf::RenderWindow& window) : window(window),
         text.setCharacterSize(30);
         text.setFillColor(sf::Color::Black);
 
+if (!exittextur.loadFromFile("aazdj/wyjscie.png")) {
+        std::cout<<"blad\n";
+   }
+   exit.setTexture(exittextur);
+
+
 
         pieniadze.setFont(font);
         pieniadze.setCharacterSize(30);
@@ -42,7 +49,7 @@ Shop::Shop(sf::RenderWindow& window) : window(window),
 
     ss << zlotowki; // Inicjalizacja ss
     zlotowkiStr = ss.str();
-
+    
 }
 
 void Shop::addprice(){
@@ -122,9 +129,27 @@ void Shop::handleEvents() {
         if (event.type == sf::Event::Closed) {
             window.close();
         } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+            sf::Vector2f mousePos = window.mapPixelToCoords(mousePosition);
+
+            if (exit.isHoveredButton()) {
+                switchTofarm();
+            }
+
+
+
             if (buykernel1.isHoveredButton()) {//pszenica
                  zbiornik.push_back(pszenicaznak);
                  licznik = 0; 
+
+        if (zlotowki >= 10) {
+                    zlotowki -= 10;
+                    ss.str(""); // Clear the stringstream
+                    ss << zlotowki; // Update stringstream with the new zlotowki value
+                    zlotowkiStr = ss.str();
+
+        }
+
 
         for (char num : zbiornik) {
                          if (num == 'P') {
@@ -161,6 +186,15 @@ void Shop::handleEvents() {
             }
          }
 
+        if (zlotowki >= 50) {
+                    zlotowki -= 50;
+                    ss.str(""); // Clear the stringstream
+                    ss << zlotowki; // Update stringstream with the new zlotowki value
+                    zlotowkiStr = ss.str();
+
+        }
+
+
          if (!found) {
         wypisz.push_back(marchewkaznak);
         }
@@ -175,6 +209,15 @@ void Shop::handleEvents() {
               
                  zbiornik.push_back(truskawkaznak);
                  licznik = 0; 
+
+        if (zlotowki >= 120) {
+                    zlotowki -= 120;
+                    ss.str(""); // Clear the stringstream
+                    ss << zlotowki; // Update stringstream with the new zlotowki value
+                    zlotowkiStr = ss.str();
+
+        }
+
 
             for (char znak : wypisz) {
             if (znak == truskawkaznak) {
@@ -250,6 +293,8 @@ void Shop::render()
         buykernel2.draw();
         buykernel3.handleMouseInteraction();
         buykernel3.draw();
+        exit.handleMouseInteraction();
+        exit.draw();
         window.draw(price1);
         window.draw(price2);
         window.draw(price3);
@@ -265,11 +310,40 @@ void Shop::render()
          }
         }
 
-pieniadze.setString(zlotowkiStr);
-pieniadze.setPosition(100, 100);
-window.draw(pieniadze);
 
         tableforunder();
          window.draw(skrzynka);
-        window.display();
+       
+pieniadze.setString(zlotowkiStr);
+pieniadze.setPosition(1000, 90);
+window.draw(pieniadze);
+ window.display();
+}
+
+void Shop::switchTofarm() {
+
+        std::ofstream wypiszFile("wypisz_values.txt");
+    if (wypiszFile.is_open()) {
+        for (char znak : wypisz) {
+            wypiszFile << znak << " ";
+        }
+        wypiszFile.close();
+    }
+
+    // Save values from the table letter into a file
+    std::ofstream letterFile("letter_values.txt");
+    if (letterFile.is_open()) {
+        for (int value : letter) {
+            letterFile << value << " ";
+        }
+        letterFile.close();
+    }
+    std::ofstream zlotowkiFile("zlotowki_value.txt");
+    if (zlotowkiFile.is_open()) {
+        zlotowkiFile << zlotowki;
+        zlotowkiFile.close();
+    }
+
+    Game game(window);
+    game.run();
 }

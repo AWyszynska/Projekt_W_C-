@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include <thread>
+#include "gra.h"
+#include "guzik.h"
+#include <fstream>
 
 class Garden {
 
@@ -25,11 +28,18 @@ private:
     GuzikWarzywa sadzonka;
     sf::Texture ziarno1;
     bool isThirdImageDisplayed;
-
+    Guzik exit;
+    sf::Texture exittextur;
     sf::Texture pasek;
     sf::Texture kopiec;
     sf::Texture pszenica;
+     int zlotowkiValue = 0;
+    sf::Font font; // Load your font if not already loaded
+    sf::Text zlotowkiText;
+    std::ifstream zlotowkiFile;
 
+    sf::Texture skrzynkazdj;
+    sf::Sprite skrzynka;
     sf::Sprite pszenica2;
     sf::Sprite pasek2;
     sf::Sprite dokopiec;
@@ -41,4 +51,5 @@ private:
     void handleEvents();
     void render();
     void kopcephoto();
+    void switchTofarm();
 };

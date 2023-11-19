@@ -7,6 +7,7 @@
 #include "shop.h"
 
 Game::Game(sf::RenderWindow& window): window(window),isRunning(true),
+zlotowkiFile("zlotowki_value.txt"),
 ogrod(window, sf::Vector2f(60, 195), sf::Vector2f(332, 245)),
 sad(window, sf::Vector2f(400, 200), sf::Vector2f(335, 340)),
 kopalnia(window, sf::Vector2f(50, 479), sf::Vector2f(638, 321)),
@@ -14,7 +15,23 @@ hodowla(window, sf::Vector2f(815, 75), sf::Vector2f(340, 339)),
 sklep(window, sf::Vector2f(845, 480), sf::Vector2f(340, 339))
 {
     window.setFramerateLimit(60);
+ if (!font.loadFromFile("Flottflott.ttf")) {
+            std::cout << "Error loading font file!" << std::endl;
+        }
+         else{
+            std::cout << "działa" << std::endl;
+        }
+ zlotowkiText.setFont(font);
+    zlotowkiText.setCharacterSize(30);
+    zlotowkiText.setFillColor(sf::Color::Black);
+    zlotowkiText.setPosition(1000, 90); // Set position as needed
+    zlotowkiText.setString("Zlotowki: " + std::to_string(zlotowkiValue));
 
+    if (zlotowkiFile.is_open()) {
+        zlotowkiFile >> zlotowkiValue;
+        zlotowkiFile.close();
+    }
+   
 
 
     if (!backgroundTexture.loadFromFile("aazdj/tlopoprawione.png")) {
@@ -22,7 +39,19 @@ sklep(window, sf::Vector2f(845, 480), sf::Vector2f(340, 339))
     }
 
     background.setTexture(backgroundTexture);
-
+    if (!pasek_zdj.loadFromFile("aazdj/pasek.png"))
+    {
+        std::cerr << "Błąd podczas wczytywania." << std::endl;
+    }
+    pasek.setTexture(pasek_zdj);
+    pasek.setPosition(260.0f, 680.0f);
+    pasek.setScale(0.9f, 0.9f);
+    if (!skrzynkazdj.loadFromFile("aazdj/skrzynka.png")) {
+    std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    skrzynka.setTexture(skrzynkazdj);
+    skrzynka.setPosition(950.0f, 0.0f);
+    skrzynka.setScale(0.5f, 0.5f);
 
 }
 
@@ -101,6 +130,19 @@ void Game::render()
         hodowla.draw();
         sklep.handleMouseInteraction();
         sklep.draw();
+        window.draw(pasek);
+        window.draw(skrzynka);
+        std::ifstream zlotowkiFile("zlotowki_value.txt");
+     // Initialize with a default value
+
+
+zlotowkiText.setString(std::to_string(zlotowkiValue));
+    window.draw(zlotowkiText);
+
+    // Open file and load value
+   
+
+
 
         window.display();
 }
