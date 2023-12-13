@@ -57,7 +57,7 @@ private:
     std::vector<char> zbiornik;
     std::vector<char> wypisz;
     std::vector<int> letter= {0,0,0,0};
-   // auto it;
+
     bool found;
 
 sf::Font font;

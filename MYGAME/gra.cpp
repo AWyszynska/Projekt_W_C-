@@ -18,13 +18,14 @@ sklep(window, sf::Vector2f(845, 480), sf::Vector2f(340, 339))
  if (!font.loadFromFile("Flottflott.ttf")) {
             std::cout << "Error loading font file!" << std::endl;
         }
-         else{
-            std::cout << "działa" << std::endl;
-        }
+
+        text.setFont(font);
+        text.setCharacterSize(30);
+        text.setFillColor(sf::Color::Black);
  zlotowkiText.setFont(font);
     zlotowkiText.setCharacterSize(30);
     zlotowkiText.setFillColor(sf::Color::Black);
-    zlotowkiText.setPosition(1000, 90); // Set position as needed
+    zlotowkiText.setPosition(1000, 90); 
     zlotowkiText.setString("Zlotowki: " + std::to_string(zlotowkiValue));
 
     if (zlotowkiFile.is_open()) {
@@ -53,14 +54,19 @@ sklep(window, sf::Vector2f(845, 480), sf::Vector2f(340, 339))
     skrzynka.setPosition(950.0f, 0.0f);
     skrzynka.setScale(0.5f, 0.5f);
 
+
+
+
 }
 
 void Game::run()
 {
+     renderTopasek();
     while (window.isOpen()) {
         handleEvents();
         render();
         loadedplace();
+
     }
 }
 
@@ -89,6 +95,78 @@ void Game::loadedplace()
     }
     sklep.setTexture(shopphoto);
 }
+
+void Game::renderTopasek(){
+    std::ifstream file("wypisz_values.txt");
+    if (!file.is_open()) {
+        std::cerr << "Nie można otworzyć pliku!" << std::endl;
+    }
+    while (file >> Signs) {
+        if (Signs != ' ') {
+            ReadSigns.push_back(Signs);
+        }
+    }
+  file.close();        
+
+        std::ifstream files("letter_values.txt");
+    if (!files.is_open()) {
+        std::cerr << "Nie można otworzyć pliku!" << std::endl;
+    }
+    while (files >> valuess) {
+        if (valuess != ' ') {
+           Readvalues.push_back(valuess);
+        }
+    }
+  files.close(); 
+}
+void Game::addToPasek(){
+int position = 270;
+    int interval = 150;
+
+    for (char znak : ReadSigns) {
+        if (znak == 'P') {
+           
+            if (obraz1.loadFromFile("aazdj/nasiono1.png")) {
+                sf::Sprite sprite(obraz1);
+                sprite.setPosition(position,700); 
+                sprite.setScale(0.15f, 0.15f);
+                window.draw(sprite);
+                
+            }
+        } else if (znak == 'M') {
+           
+            if (obraz2.loadFromFile("aazdj/nasionamarchewka.png")) {
+                sf::Sprite sprite(obraz2);
+                sprite.setPosition(position,700); 
+                sprite.setScale(0.7f, 0.7f);
+                window.draw(sprite);
+            }
+        } else if (znak == 'T') {
+
+            if (obraz3.loadFromFile("aazdj/nasionatruskawka.png")) {
+                sf::Sprite sprite(obraz3);
+                sprite.setPosition(position + 10,700); 
+                sprite.setScale(0.7f, 0.7f);
+                window.draw(sprite);
+            }
+        }
+        position += interval;
+    }
+            xPos = 220;
+        for (int i = 0; i < Readvalues.size(); ++i) {
+            xPos += 140;
+             if (Readvalues[i] != 0) { 
+            text.setString(std::to_string(Readvalues[i]));
+            text.setPosition(xPos, 750); 
+            window.draw(text);
+         }
+        }
+
+
+
+
+}
+
 
 void Game::handleEvents() {
     sf::Event event;
@@ -133,17 +211,17 @@ void Game::render()
         window.draw(pasek);
         window.draw(skrzynka);
         std::ifstream zlotowkiFile("zlotowki_value.txt");
-     // Initialize with a default value
+   
 
 
 zlotowkiText.setString(std::to_string(zlotowkiValue));
     window.draw(zlotowkiText);
 
-    // Open file and load value
+
    
 
 
-
+       addToPasek();
         window.display();
 }
 

@@ -1,4 +1,3 @@
-
 #include "shop.h" 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -144,8 +143,8 @@ void Shop::handleEvents() {
 
         if (zlotowki >= 10) {
                     zlotowki -= 10;
-                    ss.str(""); // Clear the stringstream
-                    ss << zlotowki; // Update stringstream with the new zlotowki value
+                    ss.str(""); 
+                    ss << zlotowki; 
                     zlotowkiStr = ss.str();
 
         }
@@ -209,7 +208,7 @@ void Shop::handleEvents() {
               
                  zbiornik.push_back(truskawkaznak);
                  licznik = 0; 
-
+found = false;
         if (zlotowki >= 120) {
                     zlotowki -= 120;
                     ss.str(""); // Clear the stringstream
@@ -305,7 +304,7 @@ void Shop::render()
             xPos += 140;
              if (letter[i] != 0) { 
             text.setString(std::to_string(letter[i]));
-            text.setPosition(xPos, 750); // Ustawienie pozycji na stałe poza pętlą rysowania
+            text.setPosition(xPos, 750);
             window.draw(text);
          }
         }
@@ -330,7 +329,7 @@ void Shop::switchTofarm() {
         wypiszFile.close();
     }
 
-    // Save values from the table letter into a file
+
     std::ofstream letterFile("letter_values.txt");
     if (letterFile.is_open()) {
         for (int value : letter) {

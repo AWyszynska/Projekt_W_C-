@@ -18,4 +18,25 @@ for (char num : zbiornik) {
                     }
 
 
-                    
+void Garden::handleSadzonkaInteraction() {
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+      
+        if (mousePosition.x >= 285 && mousePosition.x <= 385 &&
+            mousePosition.y >= 690 && mousePosition.y <= 790) {
+
+            isSadzonkaPressed = true; 
+            timer.restart();
+            
+        }
+    }
+}
+
+
+if(timess.size()>0){
+                newImage.timer = timess[0];
+                timess.erase(timess.begin());
+            }
+            else{

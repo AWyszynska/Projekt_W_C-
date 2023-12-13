@@ -24,7 +24,7 @@ private:
     bool isRunning;
     sf::Sprite background;
     int zlotowkiValue = 0;
-    sf::Font font; // Load your font if not already loaded
+    sf::Font font; 
     sf::Text zlotowkiText;
 
     sf::Texture skrzynkazdj;
@@ -39,12 +39,25 @@ private:
     sf::Texture animalphoto;
     sf::Texture shopphoto;
 
+    sf::Texture obraz1;
+    sf::Texture obraz2;
+    sf::Texture obraz3;
 
-void switchToGarden();
-void switchToShop();
+sf::Text text;
+ std::vector<char> ReadSigns;
+  char Signs;
+   std::vector<int> Readvalues;
+  int valuess;
+    int xPos;
 
+
+
+    void switchToGarden();
+    void switchToShop();
     void handleEvents();
     void loadedplace();
     void render();
+    void renderTopasek();
+    void addToPasek();
 };
 
