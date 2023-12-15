@@ -8,6 +8,8 @@
 #include <fstream>
 #include <map>
 #include <ctime>
+#include <sstream>
+
 class Garden {
 
 public:
@@ -24,16 +26,18 @@ struct DisplayedImage {
     bool isThirdImageDisplayed = false;
     float positionX = 0.0f;
 };
+std::chrono::duration<double> difference;
 std::vector<DisplayedImage> displayedImages;
  bool clicked = false;
  sf::RenderWindow& window;
-    sf::Clock timer;
+ std::vector<float> timess;
+
     bool isSadzonkaPressed;
     bool isRunning;
     sf::Sprite background;
     sf::Texture backgroundTexture;
     int currentImage;
-
+    
 std::vector<float> positions;
 
 
@@ -45,7 +49,7 @@ std::vector<sf::Clock> timeElapsed;
     float maxDisplayTime = 4.0f; 
 
 std::vector<int> positionss;
-std::vector<float> timess;
+
 
     Guzik exit;
     sf::Texture exittextur;
@@ -57,14 +61,14 @@ std::vector<float> timess;
     sf::Text zlotowkiText;
     std::ifstream zlotowkiFile;
     int added = 0;
-
+sf::Time initialTime;
 sf::Text text;
  std::vector<char> ReadSigns;
     char Signs;
     std::vector<int> Readvalues;
     int valuess;
     int xPos;
-
+sf::Clock myClock;
     sf::Sprite sprite1;
     sf::Sprite sprite2;
     sf::Sprite sprite3;
@@ -120,4 +124,5 @@ std::vector<sf::Sprite> pszenicaSprites;
     void loadPositions();
     void loadTimes();
     void savepositionAdditional();
+
 };

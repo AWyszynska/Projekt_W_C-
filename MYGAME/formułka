@@ -40,3 +40,6 @@ if(timess.size()>0){
                 timess.erase(timess.begin());
             }
             else{
+
+
+                newImage.timer = sf::Time::Zero;

@@ -110,16 +110,60 @@ void Garden::loadPositions() {
     }
 }
 
+
+
 void Garden::loadTimes() {
-    std::ifstream timesFile("ogrod/times.txt");
-    if (timesFile.is_open()) {
-        float time;
-        while (timesFile >> time) {
-            timess.push_back(time);
+ std::ifstream timeFile("ogrod/czaszamkniecieogrod.txt");
+    if (timeFile.is_open()) {
+        std::string line;
+        if (std::getline(timeFile, line)) {
+            std::tm timeInfo = {};
+
+            // Parsowanie daty i czasu ze wzorcem przy użyciu sscanf
+            char day[4], month[4];
+            int dayNum, hour, min, sec, year;
+
+            if (std::sscanf(line.c_str(), "%3s %3s %d %d:%d:%d %d",
+                            day, month, &dayNum, &hour, &min, &sec, &year) == 7) {
+
+                // Konwersja nazw miesięcy i dni tygodnia na liczby
+                const char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+                const char* days[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+                for (int i = 0; i < 12; ++i) {
+                    if (month == std::string(months[i])) {
+                        timeInfo.tm_mon = i;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < 7; ++i) {
+                    if (day == std::string(days[i])) {
+                        timeInfo.tm_wday = i;
+                        break;
+                    }
+                }
+
+                timeInfo.tm_mday = dayNum;
+                timeInfo.tm_hour = hour;
+                timeInfo.tm_min = min;
+                timeInfo.tm_sec = sec;
+                timeInfo.tm_year = year - 1900;
+
+                std::time_t timeValue = std::mktime(&timeInfo);
+                std::chrono::system_clock::time_point savedTime = std::chrono::system_clock::from_time_t(timeValue);
+
+                std::chrono::system_clock::time_point currentTime = std::chrono::system_clock::now();
+                difference = currentTime - savedTime;
+
+                
+            } else {
+                std::cerr << "Failed to parse time!" << std::endl;
+            }
         }
-        timesFile.close();
+        timeFile.close();
     } else {
-        std::cerr << "Unable to open times file!" << std::endl;
+        std::cerr << "Unable to open the file to read time!" << std::endl;
     }
 }
 
@@ -160,9 +204,14 @@ bool foundExisting = false;
             newImage.sprite.setPosition(newImage.positionX, 520.0f);
              currentX += imageSpacing;
             newImage.sprite.setScale(0.15f, 0.15f);
-
+             //if(timess.size()>0){
+               // initialTime = sf::seconds(timess[0]);
+//newImage.timer = timess[0];
+//timess.erase(positions.begin());
+             //}
+            // else{
             newImage.timer.restart();
-
+           //  }
             displayedImages.push_back(newImage);
         }
 
@@ -307,7 +356,7 @@ void Garden::loadPlantingInfo() {
 
      std::ifstream plantingFiless("ogrod/pozycjedodatkowe.txt");
       if (plantingFiless.is_open()) {
-        char plant;
+        float plant;
 
         while (plantingFiless >> plant) {
             positions.push_back(plant);
@@ -317,6 +366,16 @@ void Garden::loadPlantingInfo() {
         plantingFiless.close();
     } else {
         std::cerr << "Unable to open planting info file!" << std::endl;
+    }
+    std::ifstream timesFile("ogrod/times.txt");
+    if (timesFile.is_open()) {
+        float time;
+        while (timesFile >> time) {
+            timess.push_back(time);
+        }
+        timesFile.close();
+    } else {
+        std::cerr << "Unable to open times file!" << std::endl;
     }
 }
 
@@ -393,10 +452,12 @@ int position = 270;
 
 
 void Garden::run() {
+
     renderTopasek();
     loadPlantingInfo();
     loadPositions();
     loadTimes();
+
     while (window.isOpen()) {
         
         handleEvents();
@@ -569,13 +630,12 @@ void Garden::savepositionAdditional(){
         for (float plant : positions) {
             File << plant << std::endl;
         }
-       File << "" << std::endl;
+       //File << "" << std::endl;
         File.close();
     } else {
         std::cerr << "Unable to open planting info file!" << std::endl;
     }
 }
-
 
 void Garden::render()
 {
@@ -595,7 +655,11 @@ void Garden::render()
 
 changeImage();  
 std::cout<<added<<std::endl;
-
+//for(int i = 0; i<positions.size();i++){
+//std::cout<<positions[i]<<std::endl;
+//}
+std::cout << "Różnica czasu wynosi: " << difference.count() << " sekund." << std::endl;
+//std::cout<<added<<std::endl;
         window.draw(dokopiec);
         window.draw(dokopiec2);
         window.draw(dokopiec3);
