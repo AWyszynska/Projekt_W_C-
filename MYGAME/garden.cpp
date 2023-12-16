@@ -155,7 +155,7 @@ void Garden::loadTimes() {
 
                 std::chrono::system_clock::time_point currentTime = std::chrono::system_clock::now();
                 difference = currentTime - savedTime;
-
+differenceInSeconds = difference.count();
                 
             } else {
                 std::cerr << "Failed to parse time!" << std::endl;
@@ -200,18 +200,20 @@ bool foundExisting = false;
             newImage.positionX = currentX;
             }
 
-
+            newClock.restart(); // Resetowanie czasu dla nowego zegara
+            clocksadzonki.push_back(newClock);
+            clocksadzonki[i].restart();
             newImage.sprite.setPosition(newImage.positionX, 520.0f);
              currentX += imageSpacing;
             newImage.sprite.setScale(0.15f, 0.15f);
-             //if(timess.size()>0){
-               // initialTime = sf::seconds(timess[0]);
-//newImage.timer = timess[0];
-//timess.erase(positions.begin());
-             //}
-            // else{
-            newImage.timer.restart();
-           //  }
+             if(timess.size()>0){
+
+            newImage.timer = sf::seconds(timess[0]) + sf::seconds(differenceInSeconds);
+            timess.erase(timess.begin() );
+             }
+            else{
+            newImage.timer  = sf::Time::Zero;
+             }
             displayedImages.push_back(newImage);
         }
 
@@ -232,7 +234,17 @@ bool foundExisting = false;
     currentX += imageSpacing;
     newImage.sprite.setScale(0.2f, 0.2f);
 
-            newImage.timer.restart();
+            newClock.restart(); // Resetowanie czasu dla nowego zegara
+            clocksadzonki.push_back(newClock);
+            clocksadzonki[i].restart();
+                         if(timess.size()>0){
+
+newImage.timer = sf::seconds(timess[0] ) + sf::seconds(differenceInSeconds);
+timess.erase(timess.begin());
+             }
+            else{
+            newImage.timer  = sf::Time::Zero;
+             }
 
             displayedImages.push_back(newImage);
         }
@@ -255,16 +267,25 @@ bool foundExisting = false;
     newImage.sprite.setScale(0.2f, 0.2f);
 
  
-            newImage.timer.restart();
+            newClock.restart(); // Resetowanie czasu dla nowego zegara
+            clocksadzonki.push_back(newClock);
+            clocksadzonki[i].restart();
+                         if(timess.size()>0){
+
+newImage.timer = sf::seconds(timess[0]) + sf::seconds(differenceInSeconds);
+timess.erase(timess.begin());
+             }
+            else{
+            newImage.timer  = sf::Time::Zero;
+             }
 
             displayedImages.push_back(newImage);
     }
 
 
 
-
-       if (planting[i] == 'P') {
-        if (displayedImages[i].timer.getElapsedTime().asSeconds() >= 10 && !displayedImages[i].isThirdImageDisplayed) {
+if (planting[i] == 'P' && timess.size() > 0) {
+        if (displayedImages[i].timer.asSeconds()  >= 10 && !displayedImages[i].isThirdImageDisplayed) {
             if (!psze2.loadFromFile("aazdj/pszenica3.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
             }
@@ -273,7 +294,28 @@ bool foundExisting = false;
 
             displayedImages[i].sprite.setScale(0.35f, 0.35f);
             displayedImages[i].isThirdImageDisplayed = true;
-        } else if (displayedImages[i].timer.getElapsedTime().asSeconds() >= 5 && !displayedImages[i].isThirdImageDisplayed) {
+        } else if (displayedImages[i].timer.asSeconds() >= 5 && !displayedImages[i].isThirdImageDisplayed) {
+            if (!psze3.loadFromFile("aazdj/pszenica2.png")) {
+                std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+            }
+            displayedImages[i].sprite.setTexture(psze3);
+            displayedImages[i].sprite.setPosition(displayedImages[i].positionX  - 20.0f, 453.0f);
+
+            displayedImages[i].sprite.setScale(0.35f, 0.35f);
+        }
+       }
+
+       else if (planting[i] == 'P') {
+        if (displayedImages[i].timer.asSeconds()  >= 10 && !displayedImages[i].isThirdImageDisplayed) {
+            if (!psze2.loadFromFile("aazdj/pszenica3.png")) {
+                std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+            }
+            displayedImages[i].sprite.setTexture(psze2);
+            displayedImages[i].sprite.setPosition(displayedImages[i].positionX  + 20.0f, 430.0f);
+
+            displayedImages[i].sprite.setScale(0.35f, 0.35f);
+            displayedImages[i].isThirdImageDisplayed = true;
+        } else if (displayedImages[i].timer.asSeconds() >= 5 && !displayedImages[i].isThirdImageDisplayed) {
             if (!psze3.loadFromFile("aazdj/pszenica2.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
             }
@@ -284,7 +326,7 @@ bool foundExisting = false;
         }
        }
 else if (planting[i] == 'M') {
-        if (displayedImages[i].timer.getElapsedTime().asSeconds() >= 20 && !displayedImages[i].isThirdImageDisplayed) {
+        if (displayedImages[i].timer.asSeconds() >= 20 && !displayedImages[i].isThirdImageDisplayed) {
 
             if (!mar3.loadFromFile("aazdj/marchewka3.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -295,7 +337,7 @@ else if (planting[i] == 'M') {
             displayedImages[i].isThirdImageDisplayed = true; 
         }
 
-        else if (displayedImages[i].timer.getElapsedTime().asSeconds() >= 10 && !displayedImages[i].isThirdImageDisplayed) {
+        else if (displayedImages[i].timer.asSeconds() >= 10 && !displayedImages[i].isThirdImageDisplayed) {
 
             if (!mar2.loadFromFile("aazdj/marchewka2.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -309,7 +351,7 @@ else if (planting[i] == 'M') {
     }
 else if (planting[i] == 'T') {
 
-        if (displayedImages[i].timer.getElapsedTime().asSeconds() >= 40 && !displayedImages[i].isThirdImageDisplayed) {
+        if (displayedImages[i].timer.asSeconds() >= 40 && !displayedImages[i].isThirdImageDisplayed) {
 
             if (!tru3.loadFromFile("aazdj/truskawka3.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -320,7 +362,7 @@ else if (planting[i] == 'T') {
             displayedImages[i].isThirdImageDisplayed = true; 
         }
 
-        else if (displayedImages[i].timer.getElapsedTime().asSeconds() >= 20 && !displayedImages[i].isThirdImageDisplayed) {
+        else if (displayedImages[i].timer.asSeconds() >= 20 && !displayedImages[i].isThirdImageDisplayed) {
 
             if (!tru2.loadFromFile("aazdj/unnamed.png")) {
                 std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -332,7 +374,8 @@ else if (planting[i] == 'T') {
             
         }
     }
-
+        addedtime = clocksadzonki[i].restart();
+        displayedImages[i].timer += addedtime; 
     window.draw(displayedImages[i].sprite);
 
     }
@@ -406,35 +449,44 @@ void Garden::addToPasek(){
 int position = 270;
     int interval = 150;
 
-    for (char znak : ReadSigns) {
-        if (znak == 'P') {
+    for (int i = 0; i < ReadSigns.size(); i++ ) {
+        if (ReadSigns[i] == 'P' ) {
            
             if (obraz1.loadFromFile("aazdj/nasiono1.png")) {
+
                 sprite1.setTexture(obraz1);
                 //sf::Sprite sprite1(obraz1);
-                sprite1.setPosition(position,700); 
-                sprite1.setScale(0.15f, 0.15f);
-                window.draw(sprite1);
                 
+
+    sprite1.setPosition(position,700); 
+                sprite1.setScale(0.15f, 0.15f);
+                if(zasadzonepszenica ){
+                window.draw(sprite1);
+}
+
                 
             }
-        } else if (znak == 'M') {
+        } else if (ReadSigns[i] == 'M') {
            
             if (obraz2.loadFromFile("aazdj/nasionamarchewka.png")) {
                 //sf::Sprite sprite2(obraz2);
                 sprite2.setTexture(obraz2);
                 sprite2.setPosition(position,700); 
                 sprite2.setScale(0.7f, 0.7f);
+                if(zasadzonemarchew){
                 window.draw(sprite2);
+                }
             }
-        } else if (znak == 'T') {
+        } else if (ReadSigns[i] == 'T') {
 
             if (obraz3.loadFromFile("aazdj/nasionatruskawka.png")) {
                 //sf::Sprite sprite3(obraz3);
                 sprite3.setTexture(obraz3);
                 sprite3.setPosition(position + 10,700); 
                 sprite3.setScale(0.7f, 0.7f);
+                if(zasadzonetruskawka){
                 window.draw(sprite3);
+                }
             }
         }
         position += interval;
@@ -509,24 +561,73 @@ std::cout<<positionss[0]<<std::endl;
                 switchTofarm();
             }
         else if(added <4){
-             if  (sprite1.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
-                planting.push_back('P');
-                 isSadzonkaPressed = true; 
-                 added++;
-             }
-            else if  (sprite2.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+             if  (sprite1.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && zasadzonepszenica) {
+                for(int i = 0; i <ReadSigns.size() ; i++){
+                         if(ReadSigns[i] == 'P'){
+                            if( Readvalues[i] > 1){
+                            Readvalues[i] -=1;
+                             
+                            }
+                            else{
+                                //PrintLine[i] = false;
+                                zasadzonepszenica = false;
+                                Readvalues.erase(Readvalues.begin() + i);
+                                ReadSigns.erase(ReadSigns.begin() + i);
+                            }
+                        }
+
+                }
+                
+               planting.push_back('P');
+                isSadzonkaPressed = true; 
+                        added++;
+            
+         
+                
+               
+                }
+        
+            else if  (sprite2.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && zasadzonemarchew) {
+                for(int i = 0; i <ReadSigns.size() ; i++){
+                        if(ReadSigns[i] == 'M'){
+                            if( Readvalues[i] > 1){
+                            Readvalues[i] -=1;
+                            }
+                           else{
+                               // PrintLine[i] = false;
+                                zasadzonemarchew = false;
+                               Readvalues.erase(Readvalues.begin() + i);
+                                ReadSigns.erase(ReadSigns.begin() + i);
+
+                            }
+                        }
+
+                }
                 planting.push_back('M');
                 isSadzonkaPressed = true;
                 added++; 
             }
-            else if  (sprite3.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+            else if  (sprite3.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) && zasadzonetruskawka) {
+                for(int i = 0; i <ReadSigns.size() ; i++){
+                        if(ReadSigns[i] == 'T'){
+                            if( Readvalues[i] > 1){
+                            Readvalues[i] -=1;
+                            }
+                            else{
+                               // PrintLine[i] = false;
+                               zasadzonetruskawka = false;
+                                Readvalues.erase(Readvalues.begin() + i);
+                                ReadSigns.erase(ReadSigns.begin() + i);
+                            }
+                        }
+                }
                 planting.push_back('T');
                 isSadzonkaPressed = true;
                 added++; 
                 }
         }
                for (size_t i = 0; i < displayedImages.size(); ++i) {
-    if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='P' && displayedImages[i].timer.getElapsedTime().asSeconds() >= 10) {
+    if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='P' && displayedImages[i].timer.asSeconds() >= 10) {
         float positionX = displayedImages[i].positionX;
 
  
@@ -535,12 +636,12 @@ std::sort(positions.begin(), positions.end());
 
         displayedImages.erase(displayedImages.begin() + i);
         planting.erase(planting.begin() + i);
-
+clocksadzonki.erase(clocksadzonki.begin() + i);
         clicked = true;
         added--; 
         break;
     }
-    else if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='M' && displayedImages[i].timer.getElapsedTime().asSeconds() >= 20) {
+    else if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='M' && displayedImages[i].timer.asSeconds() >= 20) {
         float positionX = displayedImages[i].positionX;
 
 
@@ -549,12 +650,12 @@ std::sort(positions.begin(), positions.end());
 
         displayedImages.erase(displayedImages.begin() + i);
         planting.erase(planting.begin() + i);
-
+clocksadzonki.erase(clocksadzonki.begin() + i);
         clicked = true;
         added--; 
         break;
     }
-    else if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='T' && displayedImages[i].timer.getElapsedTime().asSeconds() >= 40) {
+    else if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='T' && displayedImages[i].timer.asSeconds() >= 40) {
         float positionX = displayedImages[i].positionX;
 
         positions.push_back(positionX);
@@ -562,7 +663,7 @@ std::sort(positions.begin(), positions.end());
 
         displayedImages.erase(displayedImages.begin() + i);
         planting.erase(planting.begin() + i);
-
+clocksadzonki.erase(clocksadzonki.begin() + i);
         clicked = true;
         added--; 
         break;
@@ -592,7 +693,7 @@ void Garden::savePositions() {
        for (DisplayedImage& pos : displayedImages) {
     positionsFile << pos.positionX << std::endl;
 }
-
+positionsFile << "" << std::endl;
         positionsFile.close();
     } else {
         std::cerr << "Unable to open positions file!" << std::endl;
@@ -603,8 +704,9 @@ void Garden::saveTimes() {
     std::ofstream timesFile("ogrod/times.txt");
     if (timesFile.is_open()) {
         for (DisplayedImage& image : displayedImages) {
-            timesFile << image.timer.getElapsedTime().asSeconds() << std::endl;
+            timesFile << image.timer.asSeconds() << std::endl;
         }
+        timesFile << "" << std::endl;
         timesFile.close();
     } else {
         std::cerr << "Unable to open times file!" << std::endl;
@@ -655,10 +757,10 @@ void Garden::render()
 
 changeImage();  
 std::cout<<added<<std::endl;
-//for(int i = 0; i<positions.size();i++){
-//std::cout<<positions[i]<<std::endl;
-//}
-std::cout << "Różnica czasu wynosi: " << difference.count() << " sekund." << std::endl;
+for(int i = 0; i<timess.size();i++){
+std::cout<<timess[i]<<std::endl;
+}
+//std::cout << "Różnica czasu wynosi: " << difference.count() << " sekund." << std::endl;
 //std::cout<<added<<std::endl;
         window.draw(dokopiec);
         window.draw(dokopiec2);
@@ -674,11 +776,6 @@ void Garden::switchTofarm() {
     savetimeall();
     savepositionAdditional();
 
-
-
-    for(int i = 0; i <positionss.size(); i++){
-std::cout<<positionss[i]<<std::endl;
-      }
     Game game(window);
     game.run();
 }

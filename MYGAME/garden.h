@@ -22,16 +22,21 @@ private:
 
 struct DisplayedImage {
     sf::Sprite sprite;
-    sf::Clock timer;
+    sf::Time timer;
     bool isThirdImageDisplayed = false;
     float positionX = 0.0f;
 };
-std::chrono::duration<double> difference;
+std::vector<sf::Clock> clocksadzonki;
+sf::Clock newClock;
+
+float differenceInSeconds;
+
+std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
 std::vector<DisplayedImage> displayedImages;
  bool clicked = false;
  sf::RenderWindow& window;
  std::vector<float> timess;
-
+ sf::Time addedtime;
     bool isSadzonkaPressed;
     bool isRunning;
     sf::Sprite background;
@@ -39,7 +44,7 @@ std::vector<DisplayedImage> displayedImages;
     int currentImage;
     
 std::vector<float> positions;
-
+ sf::Clock clock;
 
     sf::Texture ziarno1;
     float currentX = 140.0f; 
@@ -69,9 +74,14 @@ sf::Text text;
     int valuess;
     int xPos;
 sf::Clock myClock;
+
     sf::Sprite sprite1;
     sf::Sprite sprite2;
     sf::Sprite sprite3;
+
+bool zasadzonepszenica = true;
+bool zasadzonemarchew = true;
+bool zasadzonetruskawka = true;
 
     sf::Texture psze1;
     sf::Texture psze2;
