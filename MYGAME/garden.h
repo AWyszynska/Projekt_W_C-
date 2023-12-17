@@ -9,11 +9,15 @@
 #include <map>
 #include <ctime>
 #include <sstream>
+#include "openall.h"
 
 class Garden {
 
 public:
     Garden(sf::RenderWindow& window); 
+
+    std::vector<char> ReadSigns;
+    std::vector<int> Readvalues;
     void handleSadzonkaInteraction();
     void changeImage();
     void run();
@@ -30,7 +34,6 @@ std::vector<sf::Clock> clocksadzonki;
 sf::Clock newClock;
 
 float differenceInSeconds;
-
 std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
 std::vector<DisplayedImage> displayedImages;
  bool clicked = false;
@@ -68,9 +71,9 @@ std::vector<int> positionss;
     int added = 0;
 sf::Time initialTime;
 sf::Text text;
- std::vector<char> ReadSigns;
+ 
     char Signs;
-    std::vector<int> Readvalues;
+
     int valuess;
     int xPos;
 sf::Clock myClock;
@@ -83,6 +86,10 @@ bool zasadzonepszenica = true;
 bool zasadzonemarchew = true;
 bool zasadzonetruskawka = true;
 
+sf::Texture carrottolinephoto;
+sf::Texture strawberrytolinephoto;
+sf::Sprite carrottoline;
+sf::Sprite strawberrytoline;
     sf::Texture psze1;
     sf::Texture psze2;
     sf::Texture psze3;
@@ -106,14 +113,21 @@ bool zasadzonetruskawka = true;
     sf::Sprite dokopiec2;
     sf::Sprite dokopiec3;
     sf::Sprite dokopiec4;
-    sf::Vector2f position;
+
     sf::Texture marchewzdj;
     sf::Sprite marchew;
     sf::Texture truskawkazdj;
     sf::Sprite truskawka;
     sf::Vector2f originalScale;
    std::vector<char> planting;  
+int position;
+   sf::Texture tankphoto;
+   sf::Texture pointsphoto;
+   sf::Sprite points;
+
 char plantt;
+bool openwerehouse = false;
+bool sorrywiondowisopen = true;
 
 time_t czas; 
 tm* czas_info;
@@ -134,5 +148,9 @@ std::vector<sf::Sprite> pszenicaSprites;
     void loadPositions();
     void loadTimes();
     void savepositionAdditional();
+    void addstorage();
+    void bleeaddtoline();
+    void switchplace();
+    bool addedblee = false;
 
 };

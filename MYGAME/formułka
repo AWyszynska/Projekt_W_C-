@@ -6,6 +6,10 @@ g++ -c main.cpp -o main.o
 g++ -c gra.cpp -o gra.o
 g++ -c guzikwarz.cpp -o guzikwarz.o
 g++ -c garden.cpp -o garden.o
+g++ -c openall.cpp -o openall.o
+
+
+g++ main.o openall.o gra.o guzik.o menu.o garden.o guzikwarz.o shop.o guziksklep.o -o handlarz -lsfml-graphics -lsfml-window -lsfml-system
 
 
 

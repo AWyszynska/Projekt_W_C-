@@ -18,8 +18,8 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
    window.setFramerateLimit(60);
 
-    static Game game(window);
-    game.run();
+    static Garden garden(window);
+    garden.run();
 
     return 0;
 }

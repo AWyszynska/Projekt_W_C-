@@ -328,8 +328,6 @@ void Shop::switchTofarm() {
         }
         wypiszFile.close();
     }
-
-
     std::ofstream letterFile("letter_values.txt");
     if (letterFile.is_open()) {
         for (int value : letter) {

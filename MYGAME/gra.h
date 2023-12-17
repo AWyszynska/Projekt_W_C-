@@ -26,7 +26,10 @@ private:
     int zlotowkiValue = 0;
     sf::Font font; 
     sf::Text zlotowkiText;
-
+sf::Texture carrottolinephoto;
+sf::Texture strawberrytolinephoto;
+sf::Sprite carrottoline;
+sf::Sprite strawberrytoline;
     sf::Texture skrzynkazdj;
     sf::Sprite skrzynka;
     std::ifstream zlotowkiFile;

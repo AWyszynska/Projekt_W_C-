@@ -122,8 +122,12 @@ void Game::renderTopasek(){
 void Game::addToPasek(){
 int position = 270;
     int interval = 150;
-
+int displayedValues = 0;
+int displayedVal = 0;
     for (char znak : ReadSigns) {
+        if (displayedValues >= 4) {
+            break; // Przerwij pętlę po wyświetleniu 3 wartości
+        }
         if (znak == 'P') {
            
             if (obraz1.loadFromFile("aazdj/nasiono1.png")) {
@@ -131,6 +135,7 @@ int position = 270;
                 sprite.setPosition(position,700); 
                 sprite.setScale(0.15f, 0.15f);
                 window.draw(sprite);
+                displayedValues++;
                 
             }
         } else if (znak == 'M') {
@@ -140,6 +145,7 @@ int position = 270;
                 sprite.setPosition(position,700); 
                 sprite.setScale(0.7f, 0.7f);
                 window.draw(sprite);
+                displayedValues++;
             }
         } else if (znak == 'T') {
 
@@ -148,6 +154,33 @@ int position = 270;
                 sprite.setPosition(position + 10,700); 
                 sprite.setScale(0.7f, 0.7f);
                 window.draw(sprite);
+                displayedValues++;
+            }
+        }
+                else if (znak == 'C') {
+
+            if (carrottolinephoto.loadFromFile("aazdj/carrot.png")) {
+                //sf::Sprite sprite3(obraz3);
+               carrottoline.setTexture(carrottolinephoto);
+                carrottoline.setPosition(position - 5 ,700); 
+                carrottoline.setScale(0.25f, 0.25f);
+                window.draw(carrottoline);
+                displayedValues++;
+
+
+            }
+        }
+        else if (znak == 'S') {
+
+            if (strawberrytolinephoto.loadFromFile("aazdj/truskawka.png")) {
+                //sf::Sprite sprite3(obraz3);
+                strawberrytoline.setTexture(strawberrytolinephoto);
+                strawberrytoline.setPosition(position - 10,700); 
+                strawberrytoline.setScale(0.3f, 0.3f);
+                window.draw(strawberrytoline);
+                displayedValues++;
+
+
             }
         }
         position += interval;

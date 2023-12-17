@@ -1,10 +1,5 @@
 
 #include "garden.h" 
-#include "guziksklep.h" 
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <chrono>
-#include <thread>
 
 
 
@@ -21,6 +16,10 @@ zlotowkiFile("zlotowki_value.txt"),
     background.setTexture(backgroundTexture);
 
 
+    if (!tankphoto.loadFromFile("aazdj/magazynn.png"))
+    {
+        std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
     if (!psze1.loadFromFile("aazdj/sadzonka1.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -33,6 +32,7 @@ zlotowkiFile("zlotowki_value.txt"),
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
     }
+    
 
     if (!exittextur.loadFromFile("aazdj/wyjscie.png")) {
     std::cout<<"blad\n";
@@ -70,6 +70,7 @@ zlotowkiFile("zlotowki_value.txt"),
 
 void Garden::kopcephoto()
 {
+    
         if (!pasek.loadFromFile("aazdj/pasek.png"))
     {
         std::cerr << "Błąd podczas wczytywania tła." << std::endl;
@@ -381,6 +382,19 @@ else if (planting[i] == 'T') {
     }
 }  
 
+void Garden::addstorage(){
+    if (!pointsphoto.loadFromFile("aazdj/kropki.png"))
+    {
+        std::cerr << "Błąd podczas wczytywania tła." << std::endl;
+    }
+    points.setTexture(pointsphoto);
+    points.setPosition(830.0f, 725.0f);
+    points.setScale(0.4f, 0.4f);
+    window.draw(points);
+}
+
+
+
 void Garden::loadPlantingInfo() {
     std::ifstream plantingFile("ogrod/planting_info.txt");
 
@@ -432,6 +446,7 @@ void Garden::renderTopasek(){
             ReadSigns.push_back(Signs);
         }
     }
+   // ReadSigns << "" << std::endl;
   file.close();        
 
         std::ifstream files("letter_values.txt");
@@ -443,28 +458,31 @@ void Garden::renderTopasek(){
            Readvalues.push_back(valuess);
         }
     }
+    //Readvalues << "" << std::endl;
   files.close(); 
 }
 void Garden::addToPasek(){
-int position = 270;
+    position = 270;
     int interval = 150;
-
+int displayedValues = 0;
+int displayedVal = 0;
     for (int i = 0; i < ReadSigns.size(); i++ ) {
+        if (displayedValues >= 4) {
+            break; // Przerwij pętlę po wyświetleniu 3 wartości
+        }
         if (ReadSigns[i] == 'P' ) {
            
             if (obraz1.loadFromFile("aazdj/nasiono1.png")) {
 
                 sprite1.setTexture(obraz1);
                 //sf::Sprite sprite1(obraz1);
-                
-
     sprite1.setPosition(position,700); 
                 sprite1.setScale(0.15f, 0.15f);
                 if(zasadzonepszenica ){
                 window.draw(sprite1);
+                displayedValues++;
 }
-
-                
+  
             }
         } else if (ReadSigns[i] == 'M') {
            
@@ -475,6 +493,7 @@ int position = 270;
                 sprite2.setScale(0.7f, 0.7f);
                 if(zasadzonemarchew){
                 window.draw(sprite2);
+                displayedValues++;
                 }
             }
         } else if (ReadSigns[i] == 'T') {
@@ -486,18 +505,47 @@ int position = 270;
                 sprite3.setScale(0.7f, 0.7f);
                 if(zasadzonetruskawka){
                 window.draw(sprite3);
+                displayedValues++;
                 }
+            }
+        }
+        else if (ReadSigns[i] == 'C') {
+
+            if (carrottolinephoto.loadFromFile("aazdj/carrot.png")) {
+                //sf::Sprite sprite3(obraz3);
+               carrottoline.setTexture(carrottolinephoto);
+                carrottoline.setPosition(position - 5 ,700); 
+                carrottoline.setScale(0.25f, 0.25f);
+                window.draw(carrottoline);
+                displayedValues++;
+
+            }
+        }
+        else if (ReadSigns[i] == 'S') {
+
+            if (strawberrytolinephoto.loadFromFile("aazdj/truskawka.png")) {
+                //sf::Sprite sprite3(obraz3);
+                strawberrytoline.setTexture(strawberrytolinephoto);
+                strawberrytoline.setPosition(position - 10,700); 
+                strawberrytoline.setScale(0.3f, 0.3f);
+                window.draw(strawberrytoline);
+                displayedValues++;
+
             }
         }
         position += interval;
     }
             xPos = 220;
         for (int i = 0; i < Readvalues.size(); ++i) {
-            xPos += 140;
-             if (Readvalues[i] != 0) { 
+            if (displayedVal  >= 4) {
+            break; // Przerwij pętlę po wyświetleniu 3 wartości
+        }
+        xPos += 140;
+         if (Readvalues[i] != 0) { 
             text.setString(std::to_string(Readvalues[i]));
             text.setPosition(xPos, 750); 
             window.draw(text);
+            displayedVal ++;
          }
         }
 }
@@ -510,6 +558,7 @@ void Garden::run() {
     loadPositions();
     loadTimes();
 
+
     while (window.isOpen()) {
         
         handleEvents();
@@ -521,7 +570,7 @@ void Garden::run() {
         czas_info = localtime(&czas);
 render();
         kopcephoto();
-
+//bleeaddtoline();
         sf::sleep(sf::milliseconds(10));
     }
 }
@@ -534,10 +583,7 @@ void Garden::handleEvents() {
         saveTimes();
         savePlantingInfo();
         savepositionAdditional();
-        //std::cout  << asctime(czas_info);
-        for(int i = 0; i <positionss.size(); i++){
-std::cout<<positionss[0]<<std::endl;
-        }
+        switchplace();
         window.close();
     }
     while (window.pollEvent(event)) {
@@ -547,16 +593,14 @@ std::cout<<positionss[0]<<std::endl;
         savePlantingInfo();
         savetimeall();
         savepositionAdditional();
-                for(int i = 0; i <positionss.size(); i++){
-std::cout<<positionss[0]<<std::endl;
-        }
+        switchplace();
 
                 window.close();
             } 
         else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             sf::Vector2f mousePos = window.mapPixelToCoords(mousePosition);
-
+            if(sorrywiondowisopen){
             if (exit.isHoveredButton()) {
                 switchTofarm();
             }
@@ -639,8 +683,35 @@ std::sort(positions.begin(), positions.end());
 clocksadzonki.erase(clocksadzonki.begin() + i);
         clicked = true;
         added--; 
-        break;
-    }
+char znak = 'P'; // Twój znak do dodania
+int wartosc;
+bool znaleziono = false;
+        for(int j = 0;j < ReadSigns.size(); j++){
+            if(ReadSigns[j] == znak){
+                
+                Readvalues[j] += 2;
+                znaleziono = true;
+                
+                break;
+            }
+        }
+            if(!znaleziono){
+                
+                ReadSigns.push_back('P');
+                Readvalues.push_back(0);
+                for(int j = 0;j < ReadSigns.size(); j++){
+                    if(ReadSigns[j] == 'P'){
+                        Readvalues[j] += 2;
+                        break;
+                    }
+                }
+            zasadzonepszenica = true;
+            }
+            break;
+        }
+        
+        
+    
     else if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='M' && displayedImages[i].timer.asSeconds() >= 20) {
         float positionX = displayedImages[i].positionX;
 
@@ -652,9 +723,34 @@ std::sort(positions.begin(), positions.end());
         planting.erase(planting.begin() + i);
 clocksadzonki.erase(clocksadzonki.begin() + i);
         clicked = true;
-        added--; 
-        break;
+        added--;
+        char znak = 'C'; // Twój znak do dodania
+bool znaleziono = false;
+        for(int j = 0;j < ReadSigns.size(); j++){
+            if(ReadSigns[j] == znak){
+                
+                Readvalues[j] += 1;
+                znaleziono = true;
+                
+                break;
+            }
+        }
+            if(!znaleziono){
+                
+                ReadSigns.push_back('C');
+                Readvalues.push_back(0);
+                for(int j = 0;j < ReadSigns.size(); j++){
+                    if(ReadSigns[j] == 'C'){
+                        Readvalues[j] += 1;
+                        break;
+                    }
+                }
+
+            
+            } 
     }
+        
+
     else if (displayedImages[i].sprite.getGlobalBounds().contains(mousePos) && planting[i] =='T' && displayedImages[i].timer.asSeconds() >= 40) {
         float positionX = displayedImages[i].positionX;
 
@@ -666,12 +762,45 @@ std::sort(positions.begin(), positions.end());
 clocksadzonki.erase(clocksadzonki.begin() + i);
         clicked = true;
         added--; 
-        break;
+        char znak = 'S';
+bool znaleziono = false;
+        for(int j = 0;j < ReadSigns.size(); j++){
+            if(ReadSigns[j] == znak){
+                
+                Readvalues[j] += 1;
+                znaleziono = true;
+                
+                break;
+            }
+        }
+            if(!znaleziono){
+                
+                ReadSigns.push_back('S');
+                Readvalues.push_back(0);
+                for(int j = 0;j < ReadSigns.size(); j++){
+                    if(ReadSigns[j] == 'S'){
+                        Readvalues[j] += 1;
+                        break;
+                    }
+                }
+        
     }
 }
+               } 
+            }         
+    if(points.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))){
+        openwerehouse = !openwerehouse;
+        sorrywiondowisopen = !sorrywiondowisopen;
     }
+            
+            }
+       
+    
     }
-    }
+}
+
+
+
 
 void Garden::savetimeall() {
 
@@ -753,31 +882,56 @@ void Garden::render()
          std::ifstream zlotowkiFile("zlotowki_value.txt");
         zlotowkiText.setString(std::to_string(zlotowkiValue));
         window.draw(zlotowkiText);
-        addToPasek();
+        
 
 changeImage();  
-std::cout<<added<<std::endl;
-for(int i = 0; i<timess.size();i++){
-std::cout<<timess[i]<<std::endl;
-}
+//std::cout<<added<<std::endl;
+//for(int i = 0; i<ReadSigns.size();i++){
+//std::cout<<ReadSigns[i]<<std::endl;
+//std::cout<<Readvalues[i]<<std::endl;
+//}
 //std::cout << "Różnica czasu wynosi: " << difference.count() << " sekund." << std::endl;
 //std::cout<<added<<std::endl;
         window.draw(dokopiec);
         window.draw(dokopiec2);
         window.draw(dokopiec3);
         window.draw(dokopiec4);
+        //window.draw(points);
+        addstorage();
+addToPasek();
+        if(openwerehouse){
+         Openall openall(window,ReadSigns,Readvalues);
+    openall.drawtank();
+    openall.addsToPasek();
+        }
         window.display();
 }
-
+void Garden::switchplace(){
+            std::ofstream wypiszFile("wypisz_values.txt");
+    if (wypiszFile.is_open()) {
+        for (char znak : ReadSigns) {
+            wypiszFile << znak << " ";
+        }
+        wypiszFile.close();
+    }
+    std::ofstream letterFile("letter_values.txt");
+    if (letterFile.is_open()) {
+        for (int value : Readvalues) {
+            letterFile << value << " ";
+        }
+        letterFile.close();
+    }
+}
 void Garden::switchTofarm() {
     savePositions();
     saveTimes();
     savePlantingInfo();
     savetimeall();
     savepositionAdditional();
-
+switchplace();
     Game game(window);
     game.run();
+    
 }
 
 
