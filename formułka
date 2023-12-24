@@ -1,0 +1,46 @@
+g++ -c shop.cpp -o shop.o
+g++ -c guziksklep.cpp -o guziksklep.o
+g++ -c guzik.cpp -o guzik.o
+g++ -c menu.cpp -o menu.o
+g++ -c main.cpp -o main.o
+g++ -c gra.cpp -o gra.o
+g++ -c guzikwarz.cpp -o guzikwarz.o
+g++ -c garden.cpp -o garden.o
+g++ -c openall.cpp -o openall.o
+g++ -c orchard.cpp -o orchard.o
+
+g++ main.o openall.o gra.o guzik.o menu.o garden.o guzikwarz.o shop.o guziksklep.o orchard.o -o handlarz -lsfml-graphics -lsfml-window -lsfml-system
+
+
+
+for (char num : zbiornik) {
+                        std::cout << num << " ";
+                         if (num == 'P') {
+                            licznik++;
+                    }
+                    
+                    }
+
+
+void Garden::handleSadzonkaInteraction() {
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+      
+        if (mousePosition.x >= 285 && mousePosition.x <= 385 &&
+            mousePosition.y >= 690 && mousePosition.y <= 790) {
+
+            isSadzonkaPressed = true; 
+            timer.restart();
+            
+        }
+    }
+}
+
+
+if(timess.size()>0){
+                newImage.timer = timess[0];
+                timess.erase(timess.begin());
+            }
+            else{
