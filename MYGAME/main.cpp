@@ -7,19 +7,21 @@
 #include "guzikwarz.h"
 #include "shop.h"
 #include "guziksklep.h"
+#include "orchard.h"
+#include "hodowla.h"
+#include "mousehoverdisplay.h"
+#include "valuehandler.h"
+int main()
+{
 
-int main() {
+     Menu menu;
+     menu.run();
 
+    //sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
+   // window.setFramerateLimit(60);
 
-    //Menu menu;
-    //menu.run();
-
-
-    sf::RenderWindow window(sf::VideoMode(1200, 800), "handlarz");
-   window.setFramerateLimit(60);
-
-    static Garden garden(window);
-    garden.run();
+    //static Hodowla hodowla(window);
+   // hodowla.run();
 
     return 0;
 }
