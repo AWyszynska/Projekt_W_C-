@@ -5,11 +5,12 @@
 #include <thread>
 #include "gra.h"
 #include "guzik.h"
+#include "openall.h"
 #include <fstream>
 #include <map>
 #include <ctime>
 #include <sstream>
-#include "openall.h"
+
 
 class Garden {
 
@@ -21,7 +22,7 @@ public:
     void handleSadzonkaInteraction();
     void changeImage();
     void run();
-
+~Garden();
 private:
 
 struct DisplayedImage {
@@ -85,7 +86,7 @@ sf::Clock myClock;
 bool zasadzonepszenica = true;
 bool zasadzonemarchew = true;
 bool zasadzonetruskawka = true;
-
+Openall* openall;
 sf::Texture carrottolinephoto;
 sf::Texture strawberrytolinephoto;
 sf::Sprite carrottoline;
@@ -105,6 +106,12 @@ sf::Sprite strawberrytoline;
     sf::Texture obraz1;
     sf::Texture obraz2;
     sf::Texture obraz3;
+    sf::Texture obraz4;
+    sf::Texture obraz5;
+    sf::Texture obraz6;
+    sf::Texture obraz7;
+    sf::Texture obraz8;
+    sf::Texture obraz9;
     sf::Texture skrzynkazdj;
     sf::Sprite skrzynka;
     sf::Sprite pszenica2;
@@ -119,21 +126,26 @@ sf::Sprite strawberrytoline;
     sf::Texture truskawkazdj;
     sf::Sprite truskawka;
     sf::Vector2f originalScale;
-   std::vector<char> planting;  
-int position;
-   sf::Texture tankphoto;
-   sf::Texture pointsphoto;
-   sf::Sprite points;
+    std::vector<char> planting;  
+    int position;
+    sf::Texture tankphoto;
+    sf::Texture pointsphoto;
+    sf::Sprite points;
 
-char plantt;
-bool openwerehouse = false;
-bool sorrywiondowisopen = true;
+    char plantt;
+    bool openwerehouse = false;
+    bool sorrywiondowisopen = true;
 
-time_t czas; 
-tm* czas_info;
+    time_t czas; 
+    tm* czas_info;
 
-std::vector<sf::Sprite> pszenicaSprites;
-
+    std::vector<sf::Sprite> pszenicaSprites;
+   bool pomocotwarta = false;
+    sf::Texture zapytaniezdj;
+    sf::Sprite znakzapytania;
+    sf::Texture tablicapomoczdj;
+    sf::Sprite tablicapomoc;
+    sf::Sprite wyjscietablica;
     void handleEvents();
     void render();
     void kopcephoto();
@@ -152,5 +164,7 @@ std::vector<sf::Sprite> pszenicaSprites;
     void bleeaddtoline();
     void switchplace();
     bool addedblee = false;
-
+    void addhelp();
+    void znakpomocy();
+    
 };
